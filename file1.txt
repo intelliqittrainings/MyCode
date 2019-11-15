@@ -1,0 +1,9 @@
+apt-get install python-pip
+
+
+pip install python-jenkins
+
+
+https://python-jenkins.readthedocs.io/en/latest/api.html
+
+
