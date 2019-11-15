@@ -1,0 +1,338 @@
+1 Start registry as a container
+  docker run --name lr -p 5000:5000 -d registry
+  Note: The above registry image is provided by the docker community
+  and once it starts as a container it will create a local registry
+
+2 Download alpine image into our docker host
+  docker pull alpine
+
+3 Tag the image with the local registry
+  docker tag alpine localhost:5000/alpine
+
+4 Push into the loca registry
+  docker push localhost:5000/alpine
+
+
+
+
+Setup of docker swarm
+=======================
+1 Create 3 AWS instances with ubuntu18
+2 Install docker on all of them
+3 Change the hostname
+  vim /etc/hostname
+  Remove the data in this file and replace with Manager/Worker1/Worker2
+  Save and quit
+4 Restart the servers
+  init 6
+
+5 Connect to Manager using git bash
+6 To setup docker swarm
+  docker swarm init --advertise-addr private_ip_of_manager
+  This command will create the current machine as manager and it will also
+  generate the token-id that we can paste in other machines to join swarm as   workers
+
+==================================================================
+
+TCP port 2376 for secure Docker client communication. This port is required for Docker Machine to work. Docker Machine is used to orchestrate Docker hosts.
+
+TCP port 2377. This port is used for communication between the nodes of a Docker Swarm or cluster. It only needs to be opened on manager nodes.
+
+TCP and UDP port 7946 for communication among nodes (container network discovery).
+UDP port 4789 for overlay network traffic (container ingress networking). 
+
+======================================================================
+
+
+1 Create tomcat with 4 replicas in swarm 
+  docker service create --name webserver -p 9090:8080 --replicas 4 tomcat
+
+2 To see the home page of the tomcat service that is distributed in swarm
+  Launch any browser
+  public_ip_of_manager/worker1/worker2:9090
+
+3 To see the list of nodes where these 4 tomcat replicas are running
+  docker service ps webserver
+
+===================================================================
+1 Start mysql with 3 replicas
+  docker service create --name mydb -e MYSQL_ROOT_PASSWORD=intelliq 
+                                                    --replicas=3 mysql:5
+
+2 To check on which nodes these three replicas of mysql are running
+  docker service ps mydb
+
+
+================================================================
+1 To see the list of services deployed in swarm
+  docker service ls
+
+2 To get detailed info about any service
+  docker service inspect service_name/service_id
+  This command will show the service info in JSON file format
+  To display the output in normal format
+  docker service inspect service_name/service_id --pretty
+
+3 To delete a service
+  docker service rm service_name/service_id
+
+=========================================================================
+
+1 Start httpd with 5 replicas in swarm
+  docker service create --name appserver -p 8888:80 --replicas 5 httpd
+
+2 To see the list of nodes where these replicas are running
+  docker service ps appserver
+
+3 To sacle the replicas count to 9
+  docker service scale appserver=9
+
+4 Check if 9 replicas are runnning in the cluster
+  docker service ps appserver
+
+5 To scale down the replicas count to 3
+  docker service scale appserver=3
+
+6 Check if only 3 replicas are running
+  docker service ps appserver
+
+======================================================================
+
+1 Start redis:3 with 5 replicas in swarm
+  docker service create --name myredis --replicas 5 redis:3
+
+2 Check if 5 replicas are runnning in swarm with redis:3
+  docker service ps myredis
+
+3 Perfrom a rolling update to redis:4
+  docker service update --image redis:4 myredis
+
+4 Check if 5 replicas of redis:4 are running and redis:3 is shut down
+  docker service ps myredis
+
+5 Perfrom a rolling rollback from redis:4 to redis:3
+  docker service update --rollback myredis
+
+6 Check if 5 replicas of redis:3 are running and redis:4 has shut down
+  docker service ps myredis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

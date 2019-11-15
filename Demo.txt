@@ -1,0 +1,187 @@
+vim voting-app-pod.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: voting-app-pod
+ labels:
+  name: voting-app-pod
+  app: demo-voting-app
+spec:
+ containers:
+  - name: voting-app
+    image: dockersamples/examplevotingapp_vote
+    ports: 
+     - containerPort: 80
+
+-----------------------------------------------------
+vim worker-app-pod.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: worker-app-pod
+ labels:
+  name: worker-app-pod
+  app: demo-voting-app
+spec:
+ containers:
+  - name: worker-app
+    image: dockersamples/examplevotingapp_worker
+    
+----------------------------------------------------
+vim result-app-pod.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: result-app-pod
+ labels:
+  name: result-app-pod
+  app: demo-voting-app
+spec:
+ containers:
+  - name: result-app
+    image: dockersamples/examplevotingapp_resulter
+    ports:
+     - containerPort: 80
+
+------------------------------------------------------
+vim redis-pod.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: redis-pod
+ labels:
+  name: redis-pod
+  app: demo-voting-app
+spec:
+ containers:
+  - name: redis
+    image: redis
+    ports:
+     - containerPort: 6379
+--------------------------------------------------------
+vim postgres-pod.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: postgres-pod
+ labels:
+  name: postgres-pod
+  app: demo-voting-app
+spec:
+ containers:
+  - name: postgres
+    image: postgres:9.4
+    ports:
+     - containerPort: 5432
+
+-------------------------------------------
+
+vim  redis-service.yml
+apiVersion: v1
+kind: Service
+metadata: 
+ name: redis
+ labels:
+  name: redis-service
+  app: demo-voting-app
+spec:
+ ports:
+  - port: 6379
+    targetPort: 6379
+ selector:
+  name: redis-pod
+  app: demo-voting-app
+(labels of redis)
+------------------------------------------
+
+
+vim  postgres-service.yml
+apiVersion: v1
+kind: Service
+metadata: 
+ name: db
+ labels:
+  name: db-service
+  app: demo-voting-app
+spec:
+ ports:
+  - port: 5432
+    targetPort: 5432
+ selector:
+  name: postgres-pod
+  app: demo-voting-app
+(labels of post gres)
+-------------------------------------------(If type is not specified here it will be created as cluster ip whcih will be avaibale only in the cluster.So give type as Load balanncer her so it can be available externally)
+
+vim  voting-app-service.yml
+apiVersion: v1
+kind: Service
+metadata: 
+ name: voting-service
+ labels:
+  name: voting-service
+  app: demo-voting-app
+spec:
+ type: LoadBalancer  
+ ports:
+  - port: 80
+    targetPort: 80
+ selector:
+  name: voting-app-pod
+  app: demo-voting-app
+(labels of voting app pod)
+---------------------------------
+
+vim  result-app-service.yml
+apiVersion: v1
+kind: Service
+metadata: 
+ name: result-service
+ labels:
+  name: result-service
+  app: demo-voting-app
+spec:
+ type: LoadBalancer  
+ ports:
+  - port: 80
+    targetPort: 80
+ selector:
+  name: result-app-pod
+  app: demo-voting-app
+(labels of result app pod)
+-----------------------------------
+
+
+
+votingpo
+voting service
+
+redis-pod
+redis-service
+
+postgre-pod
+postgres-service
+
+worker-pod
+
+result-app-pod
+result-app-service
+
+
+
+
+
+
+
+
+
+
+
+
+
+

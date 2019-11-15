@@ -1,0 +1,94 @@
+
+
+VPC's
+=========
+ipv4   32 bit
+ipv6   128 bit
+
+2 power of 32 ip's only can be created
+
+ipv4 is divided into  parts
+255 is the maximum no
+
+cidr   classless interdomain routing
+This idicates the size of network and series
+
+10.0.0.0/24      32-24=8
+          2 to power of 8 ie 256 ips ip's can be generated
+
+10.0.0.0/23   32-23=9      512 ips can be genrated
+since 255 is the  larget number it will effect the second number in the ip range
+
+10.0.0.0
+10.0.0.1
+10.0.0.2
+10.0.0.255
+10.0.1.0
+.
+.
+10.0.1.255
+10.0.2.0
+..
+10.0.2.255
+
+
+VPC--->dived further into subnets
+changing part of ip is called host address
+constant part is called network address
+
+
+Services--->VPC
+oyour vps--->create vpc
+name of vpc
+cidr   10.0.0.0/244--->create vpc
+
+
+sunets--->create sunet-->select vpc
+name for subnet--->Leave the availability zone
+cidr block--->10.0.0.0/25  (ie 128 machines)
+--->create
+
+create another subnet
+
+cidr block  10.0.0.128/25--->create
+
+subnet is always associated with route table
+
+internet gateway
+
+create internet gateway
+name--->create
+
+select gateway--Action--->attach to vpc
+
+subnets--->select a subnet--->route table
+click on route tbale id
+Routes
+
+
+
+Autoscalling
+===================
+Launch configuration
+create configuration
+sleect aminame - lc1
+select security group
+create auto scalling group
+
+
+Auto scallinmg groups
+lc1-->next step--groupname
+select subnets
+next configure
+
+
+
+
+edit routes
+
+name--->action--->select vpc
+
+
+
+
+
